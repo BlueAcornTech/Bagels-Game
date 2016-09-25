@@ -1,0 +1,110 @@
+import random
+import time
+
+def displayRules():
+    print('Welcome to the game of Bagels!')
+    print('However, it has nothing to do with actual bagels')
+    print('This game is a game where you try to guess a 3 digit number')
+    print('And the computer will give you hints after each guess you make')
+    print('Pico means have one digit correct but not in the right place')
+    print('Fermi means that you have one digit correct and in the right place')
+    print('Bagels means you have nothing correct')
+    print('If it returns Fermi Fermi or Pico Pico it means you have 2 digits correct')
+    print('The game has 4 modes')
+    print()
+    print('Easy, Medium, Hard and IMPOSSIBLE')
+    print('Easy mode gives you 15 guesses')
+    print('Medium gives you 10 guesses')
+    print('Hard gives you 7 guesses')
+    print('Impossible gives you 4 guesses')
+    print('Good luck!')
+    return 'read'
+
+def getNumber():
+    numbers = list(range(10))
+    random.shuffle(numbers)
+    numberHundredDigit = numbers[0]
+    numberTenDigit = numbers[1]
+    numberOneDigit = numbers[2]
+    return numberHundredDigit, numberTenDigit, numberOneDigit
+
+def returnClues(playerHundredDigit, playerTenDigit, playerOneDigit, playerNumber, numberHundredDigit, numberTenDigit, numberOneDigit, secretNumber):
+    if playerNumber == secretNumber:
+        return 'player won'
+    clues = []
+    if numberHundredDigit == playerHundredDigit:
+        clues.append('Fermi')
+    if numberTenDigit == playerTenDigit:
+        clues.append('Fermi')
+    if numberOneDigit == playerOneDigit:
+        clues.append('Fermi')
+    if numberHundredDigit == playerTenDigit:
+        clues.append('Pico')
+    if numberHundredDigit == playerOneDigit:
+        clues.append('Pico')
+    if numberTenDigit == playerHundredDigit:
+        clues.append('Pico')
+    if numberTenDigit == playerOneDigit:
+        clues.append('Pico')
+    if numberOneDigit == playerHundredDigit:
+        clues.append('Pico')
+    if numberOneDigit == playerTenDigit:
+        clues.append('Pico')
+    if numberOneDigit != playerOneDigit and numberOneDigit != playerTenDigit and numberOneDigit != playerHundredDigit and numberTenDigit != playerOneDigit and numberTenDigit != playerTenDigit and numberTenDigit != playerHundredDigit and numberHundredDigit != playerOneDigit and numberHundredDigit != playerTenDigit and numberHundredDigit != playerHundredDigit:
+        clues.append('Bagels')
+    clues.sort()
+    return ' '.join(clues)
+
+
+
+
+
+print('Welcome to Bagels!')
+time.sleep(1)
+print(' ')
+print('A game presented to you by Blue Acorn Tech')
+print(' ')
+print('Would you like to read the rules of Bagels? (Yes or No)')
+playerChoice = input()
+if playerChoice == 'yes':
+    rules = displayRules()
+if playerChoice == 'no' or rules == 'read':
+    playAgain = 'yes'
+    while playAgain == 'yes':
+        print('What mode would you like to play on (Easy, Medium, Hard or IMPOSSIBLE)')
+        playerMode = input()
+        if playerMode == 'easy':
+            MAXGUESS = 15
+        if playerMode == 'medium':
+            MAXGUESS = 10
+        if playerMode == 'hard':
+            MAXGUESS = 7
+        else:
+            MAXGUESS = 4
+        print('I will think of a random 3 digit number')
+        numberHundredDigit, numberTenDigit, numberOneDigit = getNumber()
+        secretNumber = numberHundredDigit * 100 + numberTenDigit * 10 + numberOneDigit
+        guesses = 1
+        while guesses <= MAXGUESS:
+            print(' ')
+            print('Please enter your number')
+            playerNumber = input()
+            numberString = str(playerNumber)
+            playerHundredDigit = int(numberString[0])
+            playerTenDigit = int(numberString[1])
+            playerOneDigit = int(numberString[2])
+            clues = returnClues(playerHundredDigit, playerTenDigit, playerOneDigit, playerNumber, numberHundredDigit, numberTenDigit, numberOneDigit, secretNumber)
+            if clues == 'player won':
+                print('Congragulations, you have found my number!')
+                break
+            if guesses == MAXGUESS:
+                print('Sorry, you ran out of guesses, my number was ' + str(secretNumber))
+                break
+            else:
+                print(clues)
+                guesses += 1
+
+        print('Would you like to play again? (yes or no)')
+        playAgain = input()
+
+    exit()
